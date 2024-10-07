@@ -5,10 +5,22 @@
 
  const express = require('express');
  const mongoose = require('mongoose');
- 
+ const helmet = require('helmet');
+
+
 
 const app = express();  // Definir la instancia de Express
 //const Person = require('./models/person')
+
+// Usar Helmet para configurar Content Security Policy (CSP)
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "https://static.cloudflareinsights.com"]
+    }
+  })
+);
 
 const password = process.argv[2];
 //const url = `mongodb+srv://jaoprogramador:${password}@cluster0.pxu2t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
