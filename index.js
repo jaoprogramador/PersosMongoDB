@@ -23,7 +23,7 @@ app.use(helmet.contentSecurityPolicy({
 }));
 
 
-const password = process.argv[2];
+//const password = process.argv[2];
 //const url = `mongodb+srv://jaoprogramador:${password}@cluster0.pxu2t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 const Person = require('./models/person')
 const url = process.env.MONGODB_URI
@@ -62,7 +62,10 @@ mongoose.connect(url)
         })
         .catch(error => {
             console.error(error);
-            response.status(400).send({ error: 'malformatted data' });
+            if (error.name === 'ValidationError') {
+              return response.status(400).json({ error: error.message });
+            }
+            response.status(500).send({ error: 'malformatted data' });
         });
 
   

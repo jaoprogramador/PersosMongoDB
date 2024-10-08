@@ -1,60 +1,20 @@
-"# reactPersons" 
-# 3.12: Base de datos de línea de comandos
-# Crea una base de datos MongoDB basada en la nube para la aplicación de agenda telefónica con MongoDB Atlas.
+# 3.20*: Base de datos de la Agenda Telefónica, paso 8
+# Agrega validación a tu aplicación de agenda telefónica para asegurarte de que los números de teléfono tengan el formato correcto. Un número de teléfono debe:
 
-# Crea un archivo mongo.js en el directorio del proyecto, que se puede usar para agregar entradas a la agenda y para enumerar todas las entradas existentes en la agenda.
+# Tener una longitud de 8 o más caracteres.
+# Estar formado por dos partes separadas por -, la primera parte tiene dos o tres números y la segunda parte también consiste en números.
 
-# NB: ¡No incluyas la contraseña en el archivo que subes a GitHub!
+# Por ejemplo, 09-1234556 y 040-22334455 son números de teléfono válidos.
+# Por ejemplo, 1234556, 1-22334455 y 10-22-334455 son inválidos.
+# Utiliza un validador personalizado para implementar la segunda parte de la validación.
 
-# La aplicación debería funcionar de la siguiente manera. Utiliza el programa pasando tres argumentos de línea de comando (el primero es la contraseña), por ejemplo:
+# Si una solicitud HTTP POST intenta agregar una persona con un número de teléfono no válido, el servidor debería responder con un código de estado apropiado y un mensaje de error.
 
-# node mongo.js yourpassword Anna 040-1234556copy
-# Como resultado, la aplicación imprimirá:
+# 3.21 Desplegando el backend con base de datos en producción
+# Genera una nueva versión "full stack" de la aplicación creando una nueva compilación de producción del frontend y copiándola al repositorio del backend. Verifica que todo funcione localmente utilizando la aplicación completa desde la dirección http://localhost:3001/.
 
-# added Anna number 040-1234556 to phonebookcopy
-# La nueva entrada a la agenda telefónica se guardará en la base de datos. Ten en cuenta que si el nombre contiene espacios en blanco, debe ir entre comillas:
+# Lleva la versión más reciente a Fly.io/Render y verifica que todo funcione allí también.
 
-# node mongo.js yourpassword "Arto Vihavainen" 045-1232456copy
-# Si la contraseña es el único parámetro dado al programa, lo que significa que se invoca así:
+# NOTA: debes desplegar el BACKEND en el servicio en la nube. Si estás utilizando Fly.io, los comandos deben ejecutarse en el directorio raíz del backend (es decir, en el mismo directorio donde se encuentra el package.json del backend). En caso de usar Render, el backend debe estar en la raíz de tu repositorio.
 
-# node mongo.js yourpasswordcopy
-# Entonces el programa debería mostrar todas las entradas en la agenda:
-
-# phonebook:
-# Anna 040-1234556
-# Arto Vihavainen 045-1232456
-# Ada Lovelace 040-1231236
-# copy
-# Puedes obtener los parámetros de la línea de comandos de la variable process.argv.
-
-# NB: no cierres la conexión en el lugar incorrecto. Por ejemplo, el siguiente código no funcionará:
-
-# Person
-#   .find({})
-#   .then(persons=> {
-#     // ...
-#   })
-
-# mongoose.connection.close()copy
-# En el código anterior, el comando mongoose.connection.close() se ejecutará inmediatamente después de que se inicie la operación Person.find. Esto significa que la conexión a la base de datos se cerrará inmediatamente y la ejecución nunca llegará al punto en el que finalice la operación Person.find y se llame a la función callback.
-
-# El lugar correcto para cerrar la conexión de la base de datos es al final de la función callback:
-
-# Person
-#   .find({})
-#   .then(persons=> {
- #    // ...
-#     mongoose.connection.close()
-#   })copy
-# NB: Si defines un modelo con el nombre Person, mongoose nombrará automáticamente la colección asociada como people.
-
-# =======================================================
-# =======================================================
-# Base de datos de la Agenda Telefónica, paso 1
-# Cambia la búsqueda de todas las entradas de la agenda telefónica para que los datos se obtengan desde la base de datos.
-
-# Verifica que el frontend funcione después de que se hayan realizado los cambios.
-
-# En los siguientes ejercicios, escribe todo el código específico de Mongoose en su propio módulo, como hicimos en el capítulo Configuración de la base de datos en su propio módulo.
-
-"# PersosMongoDB" 
+# NO debes desplegar el frontend directamente en ninguna etapa de esta parte. Es solo el repositorio del backend que se despliega en toda esta sección, nada más.

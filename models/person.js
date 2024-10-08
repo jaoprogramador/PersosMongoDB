@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const phoneRegex = /^\d{2,3}-\d+$/; // Validación: 2 o 3 números seguidos de un guion y más números
+
 mongoose.set('strictQuery', false)
 
 const url = process.env.MONGODB_URI
@@ -15,9 +17,25 @@ mongoose.connect(url)
   })
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  tlf: String,
-  id: String
+  name: {
+    type: String,
+    required: true,
+    minlength: 3, // Añadir esta línea para validar la longitud mínima
+  },
+  tlf: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function(v) {
+        return phoneRegex.test(v); // Usa la expresión regular para validar
+      },
+      message: props => `${props.value} is not a valid phone number!`, // Mensaje de error
+    },
+    id : {
+      type: String
+    },
+  },
+
 })
 
 personSchema.set('toJSON', {
