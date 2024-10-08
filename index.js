@@ -12,7 +12,7 @@ const cors = require('cors');
 const app = express();  // Esto debe ir antes de usar `app.use`
 
 // Middlewares
-app.use(express.static('build'));  // Sirve archivos estáticos desde 'build'
+app.use(express.static('dist'));  //  Sirve archivos estáticos desde 'dist'
 app.use(express.json());
 app.use(cors());
 app.use(helmet.contentSecurityPolicy({
